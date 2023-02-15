@@ -8,7 +8,7 @@ public class SpringbootActionBookApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootActionBookApplication.class, args);
-		System.out.println("Application Started");
+		System.out.println("Application Started!!");
 	}
 
 }
