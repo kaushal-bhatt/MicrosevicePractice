@@ -16,7 +16,9 @@ public class HomeController {
     }
 
     @GetMapping("/arooj/{name}")
-    String mySecondMethod(@PathVariable String name){
-        return "This is my second method and my name is "+name;
+    String mySecondMethod(@PathVariable String name,Model model){
+        model.addAttribute("name",name);
+
+        return "index";
     }
 }
