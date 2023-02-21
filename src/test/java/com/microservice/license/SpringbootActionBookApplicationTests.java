@@ -1,4 +1,4 @@
-package com.microservice.springbootActionBook;
+package com.microservice.license;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
