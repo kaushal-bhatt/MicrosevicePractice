@@ -2,13 +2,14 @@ package com.microservice.license.Model;
 
 
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class License {
+public class License extends RepresentationModel<License> {
     private int id;
     private String licenseId;
     private String description;
