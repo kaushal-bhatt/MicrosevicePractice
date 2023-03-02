@@ -30,38 +30,38 @@ public class LicenseController {
 
     @GetMapping("/getLicense")
     public ResponseEntity<License> license(@RequestParam("organizationId") String organizationId, @RequestParam("licenseId") String licenseId,@RequestHeader(value = "Accept-Language")Locale locale){
-        License license= licenseService.getLicense(licenseId,organizationId);
+        License license= licenseService.getLicense(licenseId,organizationId,locale);
         license.add(linkTo(methodOn(LicenseController.class)
                         .license(organizationId, license.getLicenseId(),locale))
                         .withSelfRel(),
                 linkTo(methodOn(LicenseController.class)
-                        .CreateLicense(organizationId, license, null))
+                        .CreateLicense( license, null))
                         .withRel("createLicense"),
                 linkTo(methodOn(LicenseController.class)
-                        .UpdateLicense(organizationId, license,locale))
+                        .UpdateLicense( license))
                         .withRel("updateLicense"),
                 linkTo(methodOn(LicenseController.class)
-                        .deleteLicense(organizationId, licenseId,locale))
+                        .deleteLicense( licenseId,locale))
                         .withRel("deleteLicense"));
         return new ResponseEntity<>(license, HttpStatus.OK);
     }
 
     @PostMapping("/createLicense")
-    public ResponseEntity<String> CreateLicense(@RequestParam("organizationId") String organizationId, @RequestBody License license, @RequestHeader(value = "Accept-Language")Locale locale){
-        String object= licenseService.createLicense(license,organizationId,locale);
+    public ResponseEntity<String> CreateLicense( @RequestBody License license, @RequestHeader(value = "Accept-Language")Locale locale){
+        String object= licenseService.createLicense(license);
         return new ResponseEntity<>(object, HttpStatus.OK);
     }
 
     @PutMapping("/updateLicense")
-    public ResponseEntity<String> UpdateLicense(@RequestParam("organizationId") String organizationId,@RequestBody License license,@RequestHeader(value = "Accept-Language") Locale locale){
-        String object= licenseService.updateLicense(license,organizationId,locale);
+    public ResponseEntity<String> UpdateLicense(@RequestBody License license){
+        String object= licenseService.updateLicense(license);
         return new ResponseEntity<>(object, HttpStatus.OK);
     }
 
 
     @DeleteMapping(value = "/deleteLicense")
-    public ResponseEntity<String> deleteLicense(@RequestParam("organizationId") String organizationId,@RequestParam("licenseId") String licenseId,@RequestHeader(value = "Accept-Language") Locale locale){
-        String license= licenseService.deleteLicense(licenseId,organizationId,locale);
+    public ResponseEntity<String> deleteLicense(@RequestParam("licenseId") String licenseId,@RequestHeader(value = "Accept-Language") Locale locale){
+        String license= licenseService.deleteLicense(licenseId,locale);
         return new ResponseEntity<>(license, HttpStatus.OK);
     }
 }

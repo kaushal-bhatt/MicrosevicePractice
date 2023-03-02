@@ -1,56 +1,59 @@
 package com.microservice.license.service.Impl;
 
 import com.microservice.license.Model.License;
+import com.microservice.license.Repo.LicenseRepository;
 import com.microservice.license.service.LicenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class LicenseServiceImpl implements LicenseService {
 
     @Autowired
     MessageSource messages;
-    public License getLicense(String licenseId, String organizationId) {
-//        License license = new License();
-//        license.setId(new Random().nextInt(1000));
-//        license.setLicenseId(licenseId);
-//        license.setOrganizationId(organizationId);
-//        license.setDescription("Software product");
-//        license.setProductName("Ostock");
-//        license.setLicenseType("full");
 
-        return new License(new Random().nextInt(1000),licenseId,organizationId,"Software product","Ostock","full");
+    @Autowired
+    LicenseRepository licenseRepository;
+    public License getLicense(String licenseId, String organizationId,Locale locale) {
+      License license=  licenseRepository.findByOrganizationIdAndLicenseId(organizationId,licenseId);
+      if(license==null){
+          throw new IllegalArgumentException(
+                  String.format(messages.getMessage(
+                                  "license.search.error.message", null, locale),
+                          licenseId, organizationId));
+      }
+        return license;
     }
 
 
-    public String createLicense(License license, String organizationId, Locale locale){
-        String responseMessage = null;
+    public String createLicense(License license){
+        String licenseId=null;
         if(license != null) {
-            license.setOrganizationId(organizationId);
-             responseMessage = String.format(messages.getMessage(
-                            "license.create.message", null,locale),
-                    license);
+            license.setLicenseId(UUID.randomUUID().toString());
+            licenseRepository.save(license);
+            licenseId=license.getLicenseId();
+
         }
-        return responseMessage;
+        return "License has been created successfully!! and license ID is :"+licenseId;
     }
 
-    public String updateLicense(License license, String organizationId,Locale locale){
-        String responseMessage = null;
+    public String updateLicense(License license){
+
         if (license != null) {
-            license.setOrganizationId(organizationId);
-            responseMessage = String.format(messages.getMessage(
-                            "license.update.message", null, locale),
-                    license);
+         licenseRepository.save(license);
         }
-        return responseMessage;
+        return "License has been updated!!";
     }
 
-    public String deleteLicense(String licenseId, String organizationId,Locale locale){
+    public String deleteLicense(String licenseId,Locale locale){
 
+        licenseRepository.deleteById(licenseId);
         String responseMessage = null;
         responseMessage = String.format(messages.getMessage(
                         "license.delete.message", null, locale),
