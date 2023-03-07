@@ -1,0 +1,29 @@
+management:
+  endpoints:
+    health:
+      db:
+        enabled: true
+      enabled: true
+      show-details: always
+      diskspace:
+        enabled: true
+    enabled-by-default: false
+    web:
+      base-path: /
+spring:
+  datasource:
+    url : jdbc:postgresql://localhost:5432/microservicepractice_dev
+    username : root
+    password : root
+  jpa:
+    hibernate:
+      ddl-auto : update
+    properties:
+      hibernate:
+        dialect : org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+  database:
+    driverClassName: org.postgresql.Driver
+#spring:
+#  config:
+#    import: optional:configserver:http://localhost:8071
