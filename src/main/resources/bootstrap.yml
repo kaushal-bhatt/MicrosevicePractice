@@ -1,0 +1,14 @@
+spring:
+#  config:
+#    import: bootstrap.yml
+  application:
+    name: licensing-service
+  profiles:
+    active: dev
+#  cloud:
+#    config:
+#      import-check:
+#        enabled: false
+#      uri: http://localhost:8071
+#    discovery:
+#      client:
