@@ -31,6 +31,11 @@ public class License extends RepresentationModel<License> {
     private String licenseType;
     @Column(name="comment")
     private String comment;
+
+    private String OrganizationName;
+    private String ContactName;
+    private String ContactEmail;
+    private String ContactPhone;
     public License withComment(String comment){
         this.setComment(comment);
         return this;

@@ -1,6 +1,7 @@
 package com.microservice.license.service.Impl;
 
 import com.microservice.license.Model.License;
+import com.microservice.license.Model.Organization;
 import com.microservice.license.Repo.LicenseRepository;
 import com.microservice.license.service.LicenseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,26 @@ public class LicenseServiceImpl implements LicenseService {
                                   "license.search.error.message", null, locale),
                           licenseId, organizationId));
       }
+        return license;
+    }
+
+    public License getLicense(String licenseId, String organizationId, String
+            clientType){
+        License license = licenseRepository.findByOrganizationIdAndLicenseId
+                (organizationId, licenseId);
+        if (null == license) {
+            throw new IllegalArgumentException(String.format(
+                    messages.getMessage("license.search.error.message", null, null),
+                    licenseId, organizationId));
+        }
+        Organization organization = retrieveOrganizationInfo(organizationId,
+                clientType);
+        if (null != organization) {
+            license.setOrganizationName(organization.getName());
+            license.setContactName(organization.getContactName());
+            license.setContactEmail(organization.getContactEmail());
+            license.setContactPhone(organization.getContactPhone());
+        }
         return license;
     }
 
@@ -59,6 +80,12 @@ public class LicenseServiceImpl implements LicenseService {
                         "license.delete.message", null, locale),
                 licenseId);
         return responseMessage;
+    }
+
+   private Organization retrieveOrganizationInfo(String organizationId,
+                             String clientType){
+        return new Organization();
+
     }
 }
 
